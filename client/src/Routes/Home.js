@@ -2,16 +2,17 @@ import React, { Component } from 'react'
 
 import Header from '../Components/Resuable Components/Header'
 
-class Login extends Component {
+class Home extends Component {
 
 	render() {
 		return (
+
 			<div>
 				<Header/>
-					Login Page
+					Home Page
 			</div>
  		)
 	}
 }
 
-export default Login
+export default Home
