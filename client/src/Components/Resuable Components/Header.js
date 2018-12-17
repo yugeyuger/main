@@ -7,21 +7,18 @@ class Header extends Component {
 
 	render() {
 		if(!this.props.userInfo) {
-			return 
-				(
-					<div>
-						<NotLoggedInNavigationBar/>
-						{this.props.children}
-					</div>
-				)
-		}
-		else {
-			return
-				(
-					<div>
-						Logged In
-					</div>
-				)
+			return (
+				<div>
+					<NotLoggedInNavigationBar/>
+					{this.props.children}
+				</div>
+			)
+		} else { 
+			return (
+				<div>
+					Logged In
+				</div>
+			)
 		}
 	}
 }
