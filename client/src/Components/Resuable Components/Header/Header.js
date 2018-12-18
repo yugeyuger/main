@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Navbar, NavItem, MenuItem, Nav, NavDropdown} from 'react-bootstrap'
 
 import NotLoggedInNavigationBar from './NotLoggedInNavigationBar'
+import LoggedInNavigationBar from './LoggedInNavigationBar'
 
 class Header extends Component {
 
@@ -16,7 +17,8 @@ class Header extends Component {
 		} else { 
 			return (
 				<div>
-					Logged In
+					<LoggedInNavigationBar userInfo={this.props.userInfo}/>
+					{this.props.children}
 				</div>
 			)
 		}

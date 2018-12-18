@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import{ BrowserRouter, Route } from 'react-router-dom'
 
-import Login from './Routes/Login' 
 import Home from './Routes/Home' 
 import WriteAboutABook from './Routes/WriteAboutABook' 
 
@@ -11,9 +10,7 @@ import WriteAboutABook from './Routes/WriteAboutABook'
 			<BrowserRouter>
 				<div>
 				 	<Route path="/" component = {Home} exact/>
- 					<Route path="/login" component = {Login} exact />
  					<Route path="/writeAboutABook" component = {WriteAboutABook} exact/>
-
 				</div>
 			</BrowserRouter>
 			)
