@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 
-import Header from '../Components/Resuable Components/Header'
+import Header from '../Components/Resuable Components/Header/Header'
 
 class Home extends Component {
 
 	render() {
-		return (
-
+		console.log(this.props.location.userInfo)
+ 		return (
 			<div>
-				<Header/>
-					Home Page
+				<Header userInfo={ this.props.location.userInfo }/>
 			</div>
  		)
 	}

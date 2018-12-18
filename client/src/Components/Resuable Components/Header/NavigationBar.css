@@ -1,0 +1,9 @@
+.error {
+	color: red;
+}
+
+.profileImage {
+	border-radius: 100%;
+	border: 1px solid #ffffff;
+	margin-right: 5px !important;
+}
