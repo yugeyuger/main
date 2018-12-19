@@ -83,58 +83,36 @@ class NotLoggedInNavigationBar extends Component {
   };
 
   render() {
-    console.log(this.state.activeItem);
-    if (this.state.loginSuccessful) {
-      return (
-        <Redirect
-          to={{
-            pathname: window.location.pathname,
-            state: { nav: this.state.activeItem }
-          }}
-        />
-      );
-    }
+		if(this.state.loginSuccessful) {
+			return <Redirect to={{ pathname: window.location.pathname }}/>
+		}
 
-    if (this.state.open) {
-      return (
-        <Modal open={this.state.open} onClose={this.closeLoginModal}>
-          <Header content="Returning Users: Login" />
-          <Modal.Content>
-            <Form>
-              <Form.Field>
-                <p className="error">{this.state.error}</p>
-                <input
-                  type="text"
-                  onChange={this.handleUsername}
-                  value={this.state.username}
-                  placeholder="Username"
-                  className="inputArea"
-                />
-              </Form.Field>
-              <Form.Field>
-                <input
-                  onChange={this.handlePassword}
-                  value={this.state.password}
-                  placeholder="Password"
-                  className="inputArea"
-                />
-              </Form.Field>
-            </Form>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button color="green" onClick={this.logUserIn}>
-              Login
-            </Button>
-          </Modal.Actions>
-        </Modal>
-      );
-    }
-    if (
-      this.state.activeItem.length > 0 &&
-      this.state.activeItem != window.location.pathname
-    ) {
-      return <Redirect to={{ pathname: this.state.activeItem }} />;
-    }
+		if(this.state.open) {
+			return (
+	  			<Modal open={this.state.open} onClose={this.closeLoginModal}>
+				    <Header content='Returning Users: Login' />
+				    <Modal.Content>
+ 						<Form>
+				    		<Form.Field>
+				    			<p className="error">{this.state.error}</p>
+				      			<input type="text" onChange={this.handleUsername} value={this.state.username} placeholder='Username' className="inputArea"/>
+				    		</Form.Field>
+				    		<Form.Field>
+				      			<input  onChange={this.handlePassword} value={this.state.password} placeholder='Password' className="inputArea"/>
+				    		</Form.Field>
+				 		</Form>
+				    </Modal.Content>
+				    <Modal.Actions>
+				     	<Button color='green' onClick={this.logUserIn}>
+				     		Login
+				     	</Button>
+				    </Modal.Actions>
+				</Modal>
+			)
+		}
+		if(this.state.activeItem.length > 0 && (this.state.activeItem != window.location.pathname)) {
+			return <Redirect to={{ pathname: this.state.activeItem }}/>
+		}
     return (
       <div>
         <Menu borderless secondary>
