@@ -67,9 +67,8 @@ class NotLoggedInNavigationBar extends Component {
   	}
 
 	render() {
-		console.log(this.state.activeItem)
 		if(this.state.loginSuccessful) {
-			return <Redirect to={{ pathname: window.location.pathname, state: { nav: this.state.activeItem }}}/>
+			return <Redirect to={{ pathname: window.location.pathname }}/>
 		}
 
 		if(this.state.open) {
