@@ -1,24 +1,24 @@
 import React, { Component } from 'react'
 import { Menu, Input, Button, Modal, Dropdown, Header, Icon, Form } from 'semantic-ui-react'
 import { Link, Redirect } from 'react-router-dom'
-import axios from 'axios';
 
 import './NavigationBar.css'
 
 class LoggedInNavigationBar extends Component {
 
 	state = {
-		activeItem: '',
-		userInfo: this.props.userInfo
+		activeItem: window.location.pathname,
+		logout: false
 	} 
 
 	handleItemClick = (e, { name }) =>  {
 		var newUrl;
 		if(name == 'Write About a Book') {
-			newUrl = 'writeAboutABook'
+			newUrl = '/writeAboutABook'
 		} else if(name == 'In A Nutshell') {
 			newUrl = '/'
 		} else if(name == 'Log Out') {
+			localStorage.removeItem('userInfo')
 			newUrl = 'logout'
 		}
 		this.setState({ activeItem: newUrl })
@@ -26,10 +26,10 @@ class LoggedInNavigationBar extends Component {
 
 	render() {
 		if(this.state.activeItem == 'logout') {
-			console.log('logout')
+			return <Redirect to={{ pathname: window.location.pathname }}/>
 		}
-		if(this.state.activeItem.length > 0) {
-			return <Redirect to={{ pathname: this.state.activeItem, userInfo: this.state.userInfo }}/>
+		if(this.state.activeItem.length > 0 && (this.state.activeItem != window.location.pathname)) {
+			return <Redirect to={{ pathname: this.state.activeItem }}/>
 		}
 		return (
 			<div>
@@ -37,7 +37,7 @@ class LoggedInNavigationBar extends Component {
 		          <Menu.Item name='In A Nutshell' active={this.state.activeItem === '/'} onClick={this.handleItemClick} />
 		          <Menu.Item
 		            name='Write About a Book'
-		            active={this.state.activeItem === 'writeAboutABook'}
+		            active={this.state.activeItem === '/writeAboutABook'}
 		            onClick={this.handleItemClick}
 		          />
 		            <Menu.Item>
@@ -45,11 +45,10 @@ class LoggedInNavigationBar extends Component {
 		            </Menu.Item>
 		        	<Menu.Menu position='right'>
 						<Menu.Item
-			            name={this.state.userInfo.username}
 			            onClick={this.handleLogin}
 			        >
-			        	<img className="profileImage" src={this.state.userInfo.imageUrl} />
-			        	<p>{this.state.userInfo.username}</p>
+			        	<img className="profileImage" src={JSON.parse(localStorage.getItem('userInfo')).imageUrl} />
+			        	<p>{JSON.parse(localStorage.getItem('userInfo')).username}</p>
 			        </Menu.Item>
 			          <Menu.Item
 			            name='Log Out'
@@ -57,7 +56,7 @@ class LoggedInNavigationBar extends Component {
 			          />		        				        		
 		        	</Menu.Menu>
 		        </Menu>
-		  	</div>
+		  	</div>				
 		)
 	}
 }

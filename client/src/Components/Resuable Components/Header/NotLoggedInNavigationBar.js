@@ -8,7 +8,7 @@ import './NavigationBar.css'
 class NotLoggedInNavigationBar extends Component {
 
 	state = {
-		activeItem: '',
+		activeItem: window.location.pathname,
 		login: false,
 		username: '',
 		password: '',
@@ -18,12 +18,13 @@ class NotLoggedInNavigationBar extends Component {
 	handleItemClick = (e, { name }) =>  {
 		var newUrl;
 		if(name == 'Write About a Book') {
-			newUrl = 'writeAboutABook'
+			newUrl = '/writeAboutABook'
 		} else if(name == 'In A Nutshell') {
 			newUrl = '/'
 		} else if(name == 'Login') {
 			newUrl = 'login'
 		}
+
 		this.setState({ activeItem: newUrl })
 	}
 
@@ -48,7 +49,8 @@ class NotLoggedInNavigationBar extends Component {
   			axios.post('/login', {username: this.state.username, password: this.state.password})
  		 	.then(response => {
 	 		 	if(!response.data.error) {
-					this.setState({ loginSuccessful: true, userInfo: response.data })
+					localStorage.setItem('userInfo', JSON.stringify(response.data))
+					this.setState({ loginSuccessful: true })
 	 		 	} else {
 	 		 		this.setState({error: response.data.error})
 	 		 	}
@@ -65,8 +67,9 @@ class NotLoggedInNavigationBar extends Component {
   	}
 
 	render() {
+		console.log(this.state.activeItem)
 		if(this.state.loginSuccessful) {
-			return <Redirect to={{ pathname: '/', userInfo: this.state.userInfo }}/>
+			return <Redirect to={{ pathname: window.location.pathname, state: { nav: this.state.activeItem }}}/>
 		}
 
 		if(this.state.open) {
@@ -93,10 +96,8 @@ class NotLoggedInNavigationBar extends Component {
 				</Modal>
 			)
 		}
-
-		if(this.state.activeItem.length > 0) {
-			console.log(this.state.activeItem)
-			return <Redirect to={{ pathname: this.state.activeItem, userInfo: this.state.userInfo }}/>
+		if(this.state.activeItem.length > 0 && (this.state.activeItem != window.location.pathname)) {
+			return <Redirect to={{ pathname: this.state.activeItem }}/>
 		}
 		return (
 			<div>
@@ -104,7 +105,7 @@ class NotLoggedInNavigationBar extends Component {
 		          <Menu.Item name='In A Nutshell' active={this.state.activeItem === '/'} onClick={this.handleItemClick} />
 		          <Menu.Item
 		            name='Write About a Book'
-		            active={this.state.activeItem === 'writeAboutABook'}
+		            active={this.state.activeItem === '/writeAboutABook'}
 		            onClick={this.handleItemClick}
 		          />
 		            <Menu.Item>
