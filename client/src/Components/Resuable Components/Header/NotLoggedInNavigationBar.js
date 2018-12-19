@@ -7,7 +7,9 @@ import {
   Dropdown,
   Header,
   Icon,
-  Form
+  Form,
+  Responsive,
+  MenuItem
 } from "semantic-ui-react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
@@ -26,8 +28,10 @@ class NotLoggedInNavigationBar extends Component {
   handleItemClick = (e, { name }) => {
     var newUrl;
     if (name == "Write About a Book") {
-      newUrl = "/writeAboutABook";
+      newUrl = "login";
     } else if (name == "In A Nutshell") {
+      newUrl = "/";
+    } else if (name == "N") {
       newUrl = "/";
     } else if (name == "Login") {
       newUrl = "login";
@@ -133,28 +137,68 @@ class NotLoggedInNavigationBar extends Component {
     }
     return (
       <div>
-        <Menu borderless>
-          <Menu.Item
-            name="In A Nutshell"
-            active={this.state.activeItem === "/"}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            name="Write About a Book"
-            active={this.state.activeItem === "/writeAboutABook"}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item>
-            <Input icon="search" placeholder="Search..." />
-          </Menu.Item>
-          <Menu.Menu position="right">
-            <Menu.Item name=" Log in" onClick={this.handleLogin} />
+        <Menu borderless secondary>
+          <Responsive as={MenuItem} minWidth={767}>
             <Menu.Item
-              name="Sign Up"
+              name="In A Nutshell"
+              active={this.state.activeItem === "/"}
               onClick={this.handleItemClick}
-              a
-              href="https://signup.steemit.com/"
             />
+          </Responsive>
+          <Responsive as={MenuItem} maxWidth={767}>
+            <Menu.Item
+              name="N"
+              active={this.state.activeItem === "/"}
+              onClick={this.handleItemClick}
+            />
+            <Menu.Item>
+              <Input icon="search" placeholder="Search..." />
+            </Menu.Item>
+          </Responsive>
+          <Menu.Menu position="right">
+            <Responsive as={MenuItem} minWidth={767}>
+              <Menu.Item>
+                <Input icon="search" placeholder="Search..." />
+              </Menu.Item>
+              <Menu.Item
+                icon="write"
+                name="Write About a Book"
+                onClick={this.handleLogin}
+              />
+              <Menu.Item name=" Log in" onClick={this.handleLogin} />
+              <Menu.Item
+                name="Sign Up"
+                onClick={this.handleItemClick}
+                a
+                href="https://signup.steemit.com/"
+              />
+            </Responsive>
+            <Responsive as={MenuItem} maxWidth={767}>
+              <Dropdown icon="bars">
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    text="Write About a Book"
+                    name="Write About a Book"
+                    onClick={this.handleLogin}
+                    icon="write"
+                  />
+                  <Dropdown.Item
+                    text="Log in"
+                    name=" Log in"
+                    onClick={this.handleLogin}
+                    icon="sign in"
+                  />
+                  <Dropdown.Item
+                    text="Sign Up"
+                    name="Sign Up"
+                    onClick={this.handleItemClick}
+                    a
+                    href="https://signup.steemit.com/"
+                    icon="user plus"
+                  />
+                </Dropdown.Menu>
+              </Dropdown>
+            </Responsive>
           </Menu.Menu>
         </Menu>
       </div>
