@@ -5,19 +5,18 @@ import NotLoggedInNavigationBar from './NotLoggedInNavigationBar'
 import LoggedInNavigationBar from './LoggedInNavigationBar'
 
 class Header extends Component {
-
 	render() {
-		if(!this.props.userInfo) {
+		if(!localStorage.getItem('userInfo')) {
 			return (
 				<div>
-					<NotLoggedInNavigationBar/>
+					<NotLoggedInNavigationBar />
 					{this.props.children}
 				</div>
 			)
 		} else { 
 			return (
 				<div>
-					<LoggedInNavigationBar userInfo={this.props.userInfo}/>
+					<LoggedInNavigationBar/>
 					{this.props.children}
 				</div>
 			)
