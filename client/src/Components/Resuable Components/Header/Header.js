@@ -6,6 +6,7 @@ import LoggedInNavigationBar from './LoggedInNavigationBar'
 
 class Header extends Component {
 	render() {
+		console.log(!localStorage.getItem('userInfo'))
 		if(!localStorage.getItem('userInfo')) {
 			return (
 				<div>

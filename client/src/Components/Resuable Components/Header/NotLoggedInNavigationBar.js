@@ -70,7 +70,7 @@ class NotLoggedInNavigationBar extends Component {
           } else {
             this.setState({ error: response.data.error });
           }
-        });
+        })
     }
   };
 

@@ -5,9 +5,11 @@ import Header from '../Components/Resuable Components/Header/Header'
 class Home extends Component {
 
 	render() {
+		console.log("in home")
  		return (
 			<div>
-				<Header nav={this.props}/>
+				<Header/>
+				home
 			</div>
  		)
 	}

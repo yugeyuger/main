@@ -38,7 +38,7 @@ class LoggedInNavigationBar extends Component {
 
   render() {
     if (this.state.activeItem == "logout") {
-      return <Redirect to={{ pathname: window.location.pathname }} />;
+      return <Redirect to={{ pathname: "/" }} />;
     }
     if (
       this.state.activeItem.length > 0 &&
