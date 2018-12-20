@@ -1,9 +1,8 @@
-.error {
-	color: red;
+.navBackground {
+  background-color: white !important;
+  height: 5.15em !important;
 }
 
 .profileImage {
-	border-radius: 100%;
-	border: 1px solid #ffffff;
-	margin-right: 5px !important;
+  margin-right: 5px !important;
 }

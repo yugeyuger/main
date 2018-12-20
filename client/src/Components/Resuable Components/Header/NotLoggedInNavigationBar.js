@@ -14,6 +14,7 @@ import {
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
+import "../../../assets/main.css";
 import "./NavigationBar.css";
 
 class NotLoggedInNavigationBar extends Component {
@@ -83,38 +84,53 @@ class NotLoggedInNavigationBar extends Component {
   };
 
   render() {
-		if(this.state.loginSuccessful) {
-			return <Redirect to={{ pathname: window.location.pathname }}/>
-		}
+    if (this.state.loginSuccessful) {
+      return <Redirect to={{ pathname: window.location.pathname }} />;
+    }
 
-		if(this.state.open) {
-			return (
-	  			<Modal open={this.state.open} onClose={this.closeLoginModal}>
-				    <Header content='Returning Users: Login' />
-				    <Modal.Content>
- 						<Form>
-				    		<Form.Field>
-				    			<p className="error">{this.state.error}</p>
-				      			<input type="text" onChange={this.handleUsername} value={this.state.username} placeholder='Username' className="inputArea"/>
-				    		</Form.Field>
-				    		<Form.Field>
-				      			<input  onChange={this.handlePassword} value={this.state.password} placeholder='Password' className="inputArea"/>
-				    		</Form.Field>
-				 		</Form>
-				    </Modal.Content>
-				    <Modal.Actions>
-				     	<Button color='green' onClick={this.logUserIn}>
-				     		Login
-				     	</Button>
-				    </Modal.Actions>
-				</Modal>
-			)
-		}
-		if(this.state.activeItem.length > 0 && (this.state.activeItem != window.location.pathname)) {
-			return <Redirect to={{ pathname: this.state.activeItem }}/>
-		}
+    if (this.state.open) {
+      return (
+        <Modal open={this.state.open} onClose={this.closeLoginModal}>
+          <Header content="Returning Users: Login" />
+          <Modal.Content>
+            <Form>
+              <Form.Field>
+                <p className="error">{this.state.error}</p>
+                <input
+                  type="text"
+                  onChange={this.handleUsername}
+                  value={this.state.username}
+                  placeholder="Username"
+                  className="inputArea"
+                />
+              </Form.Field>
+              <Form.Field>
+                <input
+                  onChange={this.handlePassword}
+                  value={this.state.password}
+                  placeholder="Password"
+                  className="inputArea"
+                  type="password"
+                />
+              </Form.Field>
+            </Form>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button color="green" onClick={this.logUserIn}>
+              Login
+            </Button>
+          </Modal.Actions>
+        </Modal>
+      );
+    }
+    if (
+      this.state.activeItem.length > 0 &&
+      this.state.activeItem != window.location.pathname
+    ) {
+      return <Redirect to={{ pathname: this.state.activeItem }} />;
+    }
     return (
-      <div>
+      <div class="navBackground">
         <Menu borderless secondary>
           <Responsive as={MenuItem} minWidth={767}>
             <Menu.Item

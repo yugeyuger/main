@@ -9,10 +9,12 @@ import {
   Icon,
   Form,
   Responsive,
-  MenuItem
+  MenuItem,
+  Image
 } from "semantic-ui-react";
 import { Link, Redirect } from "react-router-dom";
 
+import "../../../assets/main.css";
 import "./NavigationBar.css";
 
 class LoggedInNavigationBar extends Component {
@@ -48,7 +50,7 @@ class LoggedInNavigationBar extends Component {
     }
 
     return (
-      <div>
+      <div class="navBackground">
         <Menu borderless secondary>
           <Responsive as={MenuItem} minWidth={767}>
             <Menu.Item
@@ -79,7 +81,8 @@ class LoggedInNavigationBar extends Component {
                 onClick={this.handleItemClick}
               />
               <Menu.Item>
-                <img
+                <Image
+                  avatar
                   className="profileImage"
                   src={JSON.parse(localStorage.getItem("userInfo")).imageUrl}
                 />
