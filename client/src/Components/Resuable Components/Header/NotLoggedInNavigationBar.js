@@ -65,7 +65,7 @@ class NotLoggedInNavigationBar extends Component {
         })
         .then(response => {
           if (!response.data.error) {
-            localStorage.setItem("userInfo", JSON.stringify(response.data));
+            localStorage.setItem("loginStatus", JSON.stringify(response.data));
             this.setState({ loginSuccessful: true });
           } else {
             this.setState({ error: response.data.error });

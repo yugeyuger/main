@@ -21,30 +21,32 @@ class LoggedInNavigationBar extends Component {
     logout: false
   };
 
-  handleItemClick = (e, { name }) => {
-    var newUrl;
-    if (name == "Write About a Book") {
-      newUrl = "/writeAboutABook";
-    } else if (name == "In A Nutshell") {
-      newUrl = "/";
-    } else if (name == "N") {
-      newUrl = "/";
-    } else if (name == "Log Out") {
-      localStorage.removeItem("userInfo");
-      newUrl = "logout";
-    }
-    this.setState({ activeItem: newUrl });
-  };
+ 	handleItemClick = (e, { name }) => {
+		var newUrl;
+		if (name == "Write About a Book") {
+			newUrl = "/writeAboutABook";
+		} else if (name == "In A Nutshell") {
+			newUrl = "/";
+		} else if (name == "N") {
+			newUrl = "/";
+		} else if (name == "Log Out") {
+			localStorage.removeItem("loginStatus");
+			newUrl = "logout";
+		}  else if(name == "Profile") {
+			newUrl = "/@" + JSON.parse(localStorage.getItem("loginStatus")).username
+		}
+		this.setState({ activeItem: newUrl });
+  	};
 
   render() {
     if (this.state.activeItem == "logout") {
-      return <Redirect to={{ pathname: "/" }} />;
+      return <Redirect to={{ pathname: window.location.pathname }} />;
     }
     if (
       this.state.activeItem.length > 0 &&
       this.state.activeItem != window.location.pathname
     ) {
-      return <Redirect to={{ pathname: this.state.activeItem }} />;
+      return <Redirect to={{ pathname: this.state.activeItem, state: {type: "viewOwnProfile"} }} />;
     }
 
     return (
@@ -78,12 +80,12 @@ class LoggedInNavigationBar extends Component {
                 active={this.state.activeItem === "/writeAboutABook"}
                 onClick={this.handleItemClick}
               />
-              <Menu.Item>
+              <Menu.Item active={this.state.activeItem === "/@" + JSON.parse(localStorage.getItem("loginStatus")).username} name="Profile" onClick={this.handleItemClick}>
                 <img
                   className="profileImage"
-                  src={JSON.parse(localStorage.getItem("userInfo")).imageUrl}
+                  src={JSON.parse(localStorage.getItem("loginStatus")).imageUrl}
                 />
-                <p>{JSON.parse(localStorage.getItem("userInfo")).username}</p>
+                <p>{JSON.parse(localStorage.getItem("loginStatus")).username}</p>
               </Menu.Item>
               <Menu.Item name="Log Out" onClick={this.handleItemClick} />
             </Responsive>
@@ -100,7 +102,7 @@ class LoggedInNavigationBar extends Component {
                   <Dropdown.Item
                     text="Profile"
                     name="Profile"
-                    onClick={this.handleLogin}
+                    onClick={this.handleItemClick}
                     icon="user"
                   />
                   <Dropdown.Item

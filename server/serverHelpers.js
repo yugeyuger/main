@@ -1,10 +1,10 @@
 var jwt = require('jsonwebtoken')
 var steem = require('steem')
-var firebase = require('firebase')
 var NodeRSA = require('node-rsa');
 var admin = require('firebase-admin')
 
 var Firebase = require('./firebase')
+var firebase = new Firebase()
 
 module.exports = class ServerHelpers {
 
@@ -21,7 +21,6 @@ module.exports = class ServerHelpers {
 			  		imageUrl = JSON.parse(acc[0].json_metadata)['profile']['profile_image']
 			  	}
 				if(isValid) {
-					var firebase = new Firebase()
 					var customToken
 					try {
 						customToken = await firebase.createCustomToken(username)
@@ -34,7 +33,7 @@ module.exports = class ServerHelpers {
 					} catch(error) {
 						console.log(error)
 					}
-					resolve({ customToken, username, imageUrl })
+					resolve({ userLoggedIn: true, username, imageUrl })
 				} else {
 					resolve({ error: 'Password is incorrect. Please try again.'})
 				} 		
@@ -42,6 +41,18 @@ module.exports = class ServerHelpers {
 				resolve({ error: 'Username is incorrect. Please try again.'})
 			}
 		})
+		})
+	}
+
+	getUserInfo(username) {
+		return new Promise(async (resolve) => {
+			try {
+				var isTokenVerified =  await firebase.verifyToken()
+				console.log(isTokenVerified)
+				resolve(isTokenVerified)	
+			} catch (error) {
+				resolve(error)
+			}
 		})
 	}
 }

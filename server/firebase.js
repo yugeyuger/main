@@ -10,13 +10,12 @@ var firebaseConfig = require('./firebaseConfig.js')
 module.exports = class ServerSideValidation {
 	constructor() {
 		if (!firebase.apps.length) {
-			console.log(firebase.apps)
 			firebase.initializeApp(firebaseConfig.firebaseConfig);
 			admin.initializeApp({credential: admin.credential.cert(privateKeyConfiguration)})
 		}
 	}
 
-	createCustomToken(username) {
+	async createCustomToken(username) {
 		return new Promise(resolve => {
 			admin.auth().createCustomToken(username)
 				.then((customToken) => {
@@ -46,5 +45,29 @@ module.exports = class ServerSideValidation {
         	})
 			resolve()
 		})
-	}	
+	}
+
+	verifyToken() {
+		return new Promise(resolve => {
+			firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+			  admin.auth().verifyIdToken(idToken)
+				  .then(function(decodedToken) {
+				    var uid = decodedToken.uid;
+				    resolve(uid)
+				  }).catch(function(error) {
+				    resolve(error)
+				  });
+			}).catch(function(error) {
+			  resolve(error)
+			});
+	})
+	}
+
+	async logOutUser() {
+		firebase.auth().signOut().then(function() {
+		  // Sign-out successful.
+		}, function(error) {
+		  // An error happened.
+		});
+	}
 }
