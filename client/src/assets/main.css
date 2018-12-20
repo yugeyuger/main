@@ -1,0 +1,11 @@
+.error {
+  color: red;
+}
+
+.standardBackground {
+  background-color: rgb(252, 249, 249);
+}
+
+.islandBackground {
+  background-color: white;
+}
