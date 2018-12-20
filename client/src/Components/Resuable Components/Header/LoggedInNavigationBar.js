@@ -9,7 +9,8 @@ import {
   Icon,
   Form,
   Responsive,
-  MenuItem
+  MenuItem,
+  Image
 } from "semantic-ui-react";
 import { Link, Redirect } from "react-router-dom";
 
@@ -80,7 +81,8 @@ class LoggedInNavigationBar extends Component {
                 onClick={this.handleItemClick}
               />
               <Menu.Item>
-                <img
+                <Image
+                  avatar
                   className="profileImage"
                   src={JSON.parse(localStorage.getItem("userInfo")).imageUrl}
                 />
