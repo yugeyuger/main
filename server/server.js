@@ -23,10 +23,9 @@ app.post('/login', async (req, res) => {
 })
 
 app.get('/@', async (req, res) => {
-	console.log("req.query.username")
-	userInfo = await serverHelpers.getUserInfo(req.query.username)
-	console.log(userInfo)
-	res.json(userInfo)
+	console.log(req.query.username)
+	var userProfileInfo = await serverHelpers.getUserProfileInfo(req.query.username)
+	res.json({ userProfileInfo  })
 })
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))

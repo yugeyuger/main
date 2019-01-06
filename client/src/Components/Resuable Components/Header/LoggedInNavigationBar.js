@@ -9,10 +9,12 @@ import {
   Icon,
   Form,
   Responsive,
-  MenuItem
+  MenuItem,
+  Image
 } from "semantic-ui-react";
 import { Link, Redirect } from "react-router-dom";
 
+import "../../../assets/main.css";
 import "./NavigationBar.css";
 
 class LoggedInNavigationBar extends Component {
@@ -40,24 +42,29 @@ class LoggedInNavigationBar extends Component {
 
   render() {
     if (this.state.activeItem == "logout") {
-      return <Redirect to={{ pathname: window.location.pathname }} />;
+      return <Redirect to={{ pathname: "/" }} />;
     }
     if (
       this.state.activeItem.length > 0 &&
       this.state.activeItem != window.location.pathname
     ) {
-      return <Redirect to={{ pathname: this.state.activeItem, state: {type: "viewOwnProfile"} }} />;
+      return <Redirect to={{ pathname: this.state.activeItem }} />;
     }
 
     return (
-      <div>
+      <div className="navBackground">
         <Menu borderless secondary>
           <Responsive as={MenuItem} minWidth={767}>
             <Menu.Item
               name="In A Nutshell"
               active={this.state.activeItem === "/"}
               onClick={this.handleItemClick}
-            />
+            >
+              <Image size='mini' 
+                  className="profileImage"
+                  src={require("../../../assets/images/logo1.png")}
+                />
+            </Menu.Item>
           </Responsive>
           <Responsive as={MenuItem} maxWidth={767}>
             <Menu.Item
@@ -69,19 +76,18 @@ class LoggedInNavigationBar extends Component {
               <Input icon="search" placeholder="Search..." />
             </Menu.Item>
           </Responsive>
-          <Menu.Menu position="right">
+          <Menu.Menu position="left">
             <Responsive as={MenuItem} minWidth={767}>
               <Menu.Item>
                 <Input icon="search" placeholder="Search..." />
               </Menu.Item>
               <Menu.Item
-                icon="write"
                 name="Write About a Book"
                 active={this.state.activeItem === "/writeAboutABook"}
                 onClick={this.handleItemClick}
               />
               <Menu.Item active={this.state.activeItem === "/@" + JSON.parse(localStorage.getItem("loginStatus")).username} name="Profile" onClick={this.handleItemClick}>
-                <img
+                <Image avatar
                   className="profileImage"
                   src={JSON.parse(localStorage.getItem("loginStatus")).imageUrl}
                 />

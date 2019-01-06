@@ -6,15 +6,16 @@ import MyOwnProfile from '../Components/Profile/MyOwnProfile'
 class Profile extends Component {
 
 	render() {
-		if(this.props.location.state) {
-			if(this.props.location.state.type == "viewOwnProfile") {
+		console.log(JSON.parse(localStorage.getItem("loginStatus")).username)
+		console.log(window.location.pathname)
+		if(window.location.pathname == ("/@" + JSON.parse(localStorage.getItem("loginStatus")).username)) {
+			console.log("in here yo ma jan")
 		 		return (
 					<div>
 						<Header/>
 						<MyOwnProfile/>
 					</div>
 		 		)		
-			}
 		} else {
 	 		return (
 				<div>

@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
-import { Navbar, NavItem, MenuItem, Nav, NavDropdown} from 'react-bootstrap'
+import React, { Component } from "react";
+import { Navbar, NavItem, MenuItem, Nav, NavDropdown } from "react-bootstrap";
 
-import NotLoggedInNavigationBar from './NotLoggedInNavigationBar'
-import LoggedInNavigationBar from './LoggedInNavigationBar'
+import NotLoggedInNavigationBar from "./NotLoggedInNavigationBar";
+import LoggedInNavigationBar from "./LoggedInNavigationBar";
+
+import "../../../assets/main.css";
 
 class Header extends Component {
 	render() {
@@ -24,4 +26,4 @@ class Header extends Component {
 	}
 }
 
-export default Header
+export default Header;

@@ -44,15 +44,52 @@ module.exports = class ServerHelpers {
 		})
 	}
 
-	getUserInfo(username) {
+	getUserProfileInfo(username) {
+		console.log("in get userprofileinfo")
 		return new Promise(async (resolve) => {
 			try {
-				var isTokenVerified =  await firebase.verifyToken()
-				console.log(isTokenVerified)
-				resolve(isTokenVerified)	
+				console.log("in promise")
+				var currentlyLoggedInUser =  await firebase.verifyToken()
+				console.log("user is " + currentlyLoggedInUser)
+				if(currentlyLoggedInUser == username) {
+					console.log("in username")
+					var listOfPermLinksOfPostsUsersMade = await firebase.getListOfPermLinks(username, "postsAboutBooks")
+					var listOfPostUsersMade = await this.getListOfPostsByUser(listOfPermLinksOfPostsUsersMade, username)
+					console.log("HEREERE")
+					var listOfBookmarkedPermLinks = await firebase.getListOfPermLinks(username, "bookmarks")
+					var listOfPostsOfBookmarks = await this.getListOfPostsByUser(listOfBookmarkedPermLinks, username)
+					console.log("HERE. " + listOfPostsOfBookmarks)			
+					resolve({ listOfPostUsersMade, listOfPostsOfBookmarks })
+				}
 			} catch (error) {
 				resolve(error)
 			}
 		})
 	}
+
+	async getPostsDataFromSteem(permLink, username) {
+		return new Promise(resolve => {
+			steem.api.getContent(username, permLink, function(err, result) {
+				resolve(result)
+			})
+		})
+	}
+
+	async getListOfPostsByUser(listOfPermLinks, username) {
+		console.log("a")
+		var listOfPosts = []
+		return new Promise(async (resolve) => {
+			console.log("1")
+			for(var i = 0; i < listOfPermLinks.length; i++) {
+				var a = await this.getPostsDataFromSteem(listOfPermLinks[i], username)
+				listOfPosts.push(a)
+				console.log("sixe " + listOfPosts.length)	
+			}
+			console.log("4")
+			console.log(listOfPosts[2])
+			resolve(listOfPosts)
+			})
+
+	}	
+
 }

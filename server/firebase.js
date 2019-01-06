@@ -58,9 +58,27 @@ module.exports = class ServerSideValidation {
 				    resolve(error)
 				  });
 			}).catch(function(error) {
+				console.log(error)
 			  resolve(error)
 			});
-	})
+		})
+	}
+
+	getListOfPermLinks(username, type) {
+		console.log(type)
+		return new Promise(resolve => {
+        	firebase.database().ref('/users/' + username).once('value').then(function(snapshot) {
+        		console.log("in firebase " + snapshot.val())
+        		if(type == "postsAboutBooks") {
+        			resolve(snapshot.val().postsAboutBooks)
+        		} else if(type == "bookmarks") {
+        			console.log(type)
+        			console.log(snapshot.val().bookmarks)
+        			resolve(snapshot.val().bookmarks)        			
+        		}
+			})		
+		})
+
 	}
 
 	async logOutUser() {
