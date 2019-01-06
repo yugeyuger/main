@@ -7,23 +7,23 @@ import LoggedInNavigationBar from "./LoggedInNavigationBar";
 import "../../../assets/main.css";
 
 class Header extends Component {
-  render() {
-    if (!localStorage.getItem("userInfo")) {
-      return (
-        <div>
-          <NotLoggedInNavigationBar />
-          {this.props.children}
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <LoggedInNavigationBar />
-          {this.props.children}
-        </div>
-      );
-    }
-  }
+	render() {
+		if(!localStorage.getItem('loginStatus')) {
+			return (
+				<div>
+					<NotLoggedInNavigationBar />
+					{this.props.children}
+				</div>
+			)
+		} else { 
+			return (
+				<div>
+					<LoggedInNavigationBar/>
+					{this.props.children}
+				</div>
+			)
+		}
+	}
 }
 
 export default Header;

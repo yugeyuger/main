@@ -1,0 +1,97 @@
+.profilePage {
+	border-radius: 10px;
+}
+
+.userProfileImage {
+	border: 1px solid rgb(252, 249, 249);
+	padding: 3px;
+	margin-left: auto;
+    margin-right: auto 
+}
+
+.contentParent {
+	max-width: 90% !important;
+}
+
+.userInfo {
+	text-align: center !important;
+}
+
+.postFeedContent {
+	background: white !important;
+}
+
+.postFeed {
+	background: white !important;
+	border-radius: 10px !important;
+	padding: 5px !important;
+}
+
+.postUsername {
+	font-family: 'Roboto', sans-serif !important;
+	color: black;
+}
+
+.genre {
+	font-family: 'Roboto', sans-serif !important;
+	color: #00000066;
+	font-weight: normal;
+}
+
+.event {
+	margin-bottom: 10px !important;
+}
+
+.howLongAgo{
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: normal;
+	font-size: 13px !important;
+	color: #00000066;
+	pointer-events: none;
+	cursor: default;
+ 	text-decoration: none;
+}
+
+h2 {
+	font-family: 'Roboto', sans-serif !important;
+}
+
+.postTitle {
+	font-family: 'Roboto', sans-serif !important;
+}
+
+.postContent {
+	font-family: 'Roboto', sans-serif !important;
+}
+
+.userBasicInfo {
+	text-align: center;
+}
+
+.profileMenu {
+	font-family: 'Roboto', sans-serif !important;
+	background: white !important;
+    border-radius: 5px !important;
+    padding: 5px;
+    border-bottom: white !important;
+}
+
+.profileMenu .active {
+	background: #90CCF4 !important;
+	border: 1px solid #90CCF4 !important;
+	border-bottom: 1px solid #90CCF4 !important;
+	color: white !important;
+	font-weight: normal !important;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.nonClickable {
+	cursor: default !important;
+}
+
+.loading {
+	fill: #90CCF4 !important;
+}

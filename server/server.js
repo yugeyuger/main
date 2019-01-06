@@ -6,16 +6,26 @@ var steem = require('steem')
 const app = express()
 const port = 3001
 
-var secret = require('./secretKey.json')['secret']
 var ServerHelpers = require('./serverHelpers.js')
+var serverHelpers =  new ServerHelpers()
 
 app.use(bodyParser.json())
 
 app.post('/login', async (req, res) => {
 	const { username, password } = req.body
-	var serverHelpers =  new ServerHelpers()
-	var userInfo = await serverHelpers.logUserIn(username, password, secret)
-	res.json(userInfo)
+	var userinfo
+	try {
+		userInfo = await serverHelpers.logUserIn(username, password)
+		res.json(userInfo)
+	} catch(error) {
+		console.log(error)
+	}
+})
+
+app.get('/@', async (req, res) => {
+	console.log(req.query.username)
+	var userProfileInfo = await serverHelpers.getUserProfileInfo(req.query.username)
+	res.json({ userProfileInfo  })
 })
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))

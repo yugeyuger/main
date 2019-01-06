@@ -23,24 +23,26 @@ class LoggedInNavigationBar extends Component {
     logout: false
   };
 
-  handleItemClick = (e, { name }) => {
-    var newUrl;
-    if (name == "Write About a Book") {
-      newUrl = "/writeAboutABook";
-    } else if (name == "In A Nutshell") {
-      newUrl = "/";
-    } else if (name == "N") {
-      newUrl = "/";
-    } else if (name == "Log Out") {
-      localStorage.removeItem("userInfo");
-      newUrl = "logout";
-    }
-    this.setState({ activeItem: newUrl });
-  };
+ 	handleItemClick = (e, { name }) => {
+		var newUrl;
+		if (name == "Write About a Book") {
+			newUrl = "/writeAboutABook";
+		} else if (name == "In A Nutshell") {
+			newUrl = "/";
+		} else if (name == "N") {
+			newUrl = "/";
+		} else if (name == "Log Out") {
+			localStorage.removeItem("loginStatus");
+			newUrl = "logout";
+		}  else if(name == "Profile") {
+			newUrl = "/@" + JSON.parse(localStorage.getItem("loginStatus")).username
+		}
+		this.setState({ activeItem: newUrl });
+  	};
 
   render() {
     if (this.state.activeItem == "logout") {
-      return <Redirect to={{ pathname: window.location.pathname }} />;
+      return <Redirect to={{ pathname: "/" }} />;
     }
     if (
       this.state.activeItem.length > 0 &&
@@ -50,14 +52,19 @@ class LoggedInNavigationBar extends Component {
     }
 
     return (
-      <div class="navBackground">
+      <div className="navBackground">
         <Menu borderless secondary>
           <Responsive as={MenuItem} minWidth={767}>
             <Menu.Item
               name="In A Nutshell"
               active={this.state.activeItem === "/"}
               onClick={this.handleItemClick}
-            />
+            >
+              <Image size='mini' 
+                  className="profileImage"
+                  src={require("../../../assets/images/logo1.png")}
+                />
+            </Menu.Item>
           </Responsive>
           <Responsive as={MenuItem} maxWidth={767}>
             <Menu.Item
@@ -69,24 +76,22 @@ class LoggedInNavigationBar extends Component {
               <Input icon="search" placeholder="Search..." />
             </Menu.Item>
           </Responsive>
-          <Menu.Menu position="right">
+          <Menu.Menu position="left">
             <Responsive as={MenuItem} minWidth={767}>
               <Menu.Item>
                 <Input icon="search" placeholder="Search..." />
               </Menu.Item>
               <Menu.Item
-                icon="write"
                 name="Write About a Book"
                 active={this.state.activeItem === "/writeAboutABook"}
                 onClick={this.handleItemClick}
               />
-              <Menu.Item>
-                <Image
-                  avatar
+              <Menu.Item active={this.state.activeItem === "/@" + JSON.parse(localStorage.getItem("loginStatus")).username} name="Profile" onClick={this.handleItemClick}>
+                <Image avatar
                   className="profileImage"
-                  src={JSON.parse(localStorage.getItem("userInfo")).imageUrl}
+                  src={JSON.parse(localStorage.getItem("loginStatus")).imageUrl}
                 />
-                <p>{JSON.parse(localStorage.getItem("userInfo")).username}</p>
+                <p>{JSON.parse(localStorage.getItem("loginStatus")).username}</p>
               </Menu.Item>
               <Menu.Item name="Log Out" onClick={this.handleItemClick} />
             </Responsive>
@@ -103,7 +108,7 @@ class LoggedInNavigationBar extends Component {
                   <Dropdown.Item
                     text="Profile"
                     name="Profile"
-                    onClick={this.handleLogin}
+                    onClick={this.handleItemClick}
                     icon="user"
                   />
                   <Dropdown.Item

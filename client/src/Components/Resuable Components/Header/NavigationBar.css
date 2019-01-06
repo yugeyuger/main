@@ -1,8 +1,58 @@
 .navBackground {
-  background-color: white !important;
+  background-color: #ECECEC !important;
   height: 5.15em !important;
+  margin-bottom: 1.4em;
+  border-radius: 10px;
 }
 
+a{
+	  font-family: 'Roboto', sans-serif !important;
+}
 .profileImage {
   margin-right: 5px !important;
+}
+
+input{
+	border: 1px solid white !important;
+}
+
+.logInOnNavBar {
+	font-size: 14px;
+}
+
+.signUpOnNavBar {
+	font-size: 14px;
+}
+
+.writeNavBar {
+	font-size: 14px;
+}
+.active {
+  border-bottom: 1px solid black !important;
+  background-color: #ECECEC !important;
+  border-radius: 0px !important;
+}
+
+.loginInputArea {
+	border: 1px solid white !important;
+
+}
+
+.loginModal {
+	border-radius: 10px !important;
+	border: 1px solid #ECECEC !important;
+}
+
+.content{
+	background-color: #ECECEC !important;
+}
+
+.actions {
+	background-color: #ECECEC !important;
+	border-top: 1px solid #ECECEC !important;
+	padding-right: 30px !important;
+}
+
+button{
+	background: #5DA2D5 !important;
 }
