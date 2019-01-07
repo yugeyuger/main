@@ -44,6 +44,7 @@ class BookmarksOrPosts extends Component {
  	}
 
  	goToProfilePage = () => {
+ 		window.location.reload(); 
 		this.setState({ goToProfilePage: true })
  	}
 	renderUserData() {
@@ -64,7 +65,7 @@ class BookmarksOrPosts extends Component {
 			      <Feed.Label onClick={() => this.goToProfilePage(item)} className="clickable" image={JSON.parse(localStorage.getItem("loginStatus")).imageUrl}/>
 			      <Feed.Content className="postFeedContent">
 			        <Feed.Summary>
-			          <a onClick={() => this.goToPostPage(item)} className="postUsername clickable">{JSON.parse(localStorage.getItem("loginStatus")).username}</a> <a className="genre clickable">•&nbsp;{JSON.parse(item["json_metadata"])["tags"][1]}&nbsp;•&nbsp;</a>
+			          <a onClick={() => this.goToProfilePage(item)} className="postUsername clickable">{JSON.parse(localStorage.getItem("loginStatus")).username}</a> <a className="genre clickable">•&nbsp;{JSON.parse(item["json_metadata"])["tags"][1]}&nbsp;•&nbsp;</a>
 			          <a className="howLongAgo">{moment.utc(item["created"], "YYYY-MM-DD hh:mm:ss").fromNow()}</a>
 			        </Feed.Summary>
 			        <Feed.Summary >
