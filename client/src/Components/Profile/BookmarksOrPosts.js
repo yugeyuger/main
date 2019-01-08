@@ -44,27 +44,29 @@ class BookmarksOrPosts extends Component {
  	}
 
  	goToProfilePage = () => {
+ 		window.location.reload(); 
 		this.setState({ goToProfilePage: true })
  	}
 	renderUserData() {
 		if(this.state.goToProfilePage) {
-			return <Redirect to={{ pathname: '@' + JSON.parse(localStorage.getItem("loginStatus")).username }} />;			
+			return <Redirect to={{ pathname: '@' + postDataForPostPage['userAccountInfo']['username'] }} />;			
 		}
 		if(this.state.goToPostPage) {
 			var postDataForPostPage = this.state.postDataForPostPage
-			return <Redirect to={{ pathname: '@' + postDataForPostPage['author']+ '/' + postDataForPostPage['permlink'], state: {postDetails: postDataForPostPage} }} />;
+			console.log(postDataForPostPage)
+			return <Redirect to={{ pathname: '@' + postDataForPostPage['userAccountInfo']['username'] + '/' + postDataForPostPage['permLink'], state: {postDetails: postDataForPostPage} }} />;
 		}
 		if(this.state.dataToSee.length == 0) {
 			return <div></div>
 		}
 		return this.state.dataToSee.map((item, i) => {
-			console.log("in map")
+			console.log(item)
 		    return (
 			    <Feed.Event className="postFeed">
-			      <Feed.Label onClick={() => this.goToProfilePage(item)} className="clickable" image={JSON.parse(localStorage.getItem("loginStatus")).imageUrl}/>
+			      <Feed.Label onClick={() => this.goToProfilePage(item)} className="clickable" image={item['userAccountInfo']['imageUrl']}/>
 			      <Feed.Content className="postFeedContent">
 			        <Feed.Summary>
-			          <a onClick={() => this.goToPostPage(item)} className="postUsername clickable">{JSON.parse(localStorage.getItem("loginStatus")).username}</a> <a className="genre clickable">•&nbsp;{JSON.parse(item["json_metadata"])["tags"][1]}&nbsp;•&nbsp;</a>
+			          <a onClick={() => this.goToPostPage(item)} className="postUsername clickable">{item['userAccountInfo']['username']}</a> <a className="genre clickable">•&nbsp;{item['genre']}&nbsp;•&nbsp;</a>
 			          <a className="howLongAgo">{moment.utc(item["created"], "YYYY-MM-DD hh:mm:ss").fromNow()}</a>
 			        </Feed.Summary>
 			        <Feed.Summary >
@@ -76,11 +78,11 @@ class BookmarksOrPosts extends Component {
 			          </a>
 			        </Feed.Extra>
 				        <Feed.Extra text className="contentParent clickable" onClick={() => this.goToPostPage(item)}>
-				        	<p className="postContent">{ReactHtmlParser(item["body"].substring(0, 250))} ...</p>
+				        	<p className="postContent">{ReactHtmlParser(item["content"].substring(0, 250))} ...</p>
 				        </Feed.Extra>
 			        <Feed.Meta>
 			          <Feed.Like className="nonClickable">
-			            {item["active_votes"].length} likes
+			            {item["active_votes"]} likes
 			          </Feed.Like>
 			        </Feed.Meta>
 			      </Feed.Content>

@@ -8,6 +8,23 @@ var firebase = new Firebase()
 
 module.exports = class ServerHelpers {
 
+	async getUserAccountInformation(username) {
+		return new Promise(resolve => {
+			steem.api.getAccounts([ username ], async (err, acc) => {
+				var imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png'
+			  	if(acc[0].json_metadata){
+				  	if(JSON.parse(acc[0].json_metadata)['profile']) {
+				  		imageUrl = JSON.parse(acc[0].json_metadata)['profile']['profile_image']
+				  	}			  		
+			  	}
+
+				resolve({ imageUrl, username });
+			})			
+		})
+
+
+	}
+
 	logUserIn(username, password) {
 		return new Promise(resolve => {
 			steem.api.getAccounts([ username ], async (err, acc) => {
@@ -45,20 +62,28 @@ module.exports = class ServerHelpers {
 	}
 
 	getUserProfileInfo(username) {
-		console.log("in get userprofileinfo")
 		return new Promise(async (resolve) => {
 			try {
-				console.log("in promise")
 				var currentlyLoggedInUser =  await firebase.verifyToken()
-				console.log("user is " + currentlyLoggedInUser)
 				if(currentlyLoggedInUser == username) {
-					console.log("in username")
-					var listOfPermLinksOfPostsUsersMade = await firebase.getListOfPermLinks(username, "postsAboutBooks")
-					var listOfPostUsersMade = await this.getListOfPostsByUser(listOfPermLinksOfPostsUsersMade, username)
-					console.log("HEREERE")
-					var listOfBookmarkedPermLinks = await firebase.getListOfPermLinks(username, "bookmarks")
-					var listOfPostsOfBookmarks = await this.getListOfPostsByUser(listOfBookmarkedPermLinks, username)
-					console.log("HERE. " + listOfPostsOfBookmarks)			
+					var objOfPermLinksOfPostsUsersMade = await firebase.getListOfPermLinks(username, "postsAboutBooks")
+					var listOfPermLinksPosts = []
+					for(var elem in objOfPermLinksOfPostsUsersMade) {
+						listOfPermLinksPosts = objOfPermLinksOfPostsUsersMade[elem][username]
+					}
+					var listOfPostUsersMade = await this.getListOfPostsByUser(listOfPermLinksPosts, username)
+					var listOfPostsOfBookmarks = []
+					var listOfPermLinksBookmarks = []
+					var objOfBookmarkedPermLinks = await firebase.getListOfPermLinks(username, "bookmarks")
+					for(var user in objOfBookmarkedPermLinks) {
+						for(var elem of objOfBookmarkedPermLinks[user]) {
+							listOfPermLinksBookmarks.push(elem)
+						}
+						var posts = await this.getListOfPostsByUser(listOfPermLinksBookmarks, user)
+						for(var post of posts) {
+							listOfPostsOfBookmarks.push(post)
+						}
+					}
 					resolve({ listOfPostUsersMade, listOfPostsOfBookmarks })
 				}
 			} catch (error) {
@@ -69,24 +94,30 @@ module.exports = class ServerHelpers {
 
 	async getPostsDataFromSteem(permLink, username) {
 		return new Promise(resolve => {
-			steem.api.getContent(username, permLink, function(err, result) {
-				resolve(result)
+			steem.api.getContent(username, permLink, async (err, result) => {
+				var userAccountInfo
+				try{
+					userAccountInfo = await this.getUserAccountInformation(username)
+				} catch(error) {
+					console.log(error)
+				}
+				var title = result['title']
+				var votes = result['active_votes'].length
+				var created = result['created']
+				var content = result['body']
+				var genre = JSON.parse(result['json_metadata'])['tags'][1]
+				resolve({userAccountInfo, genre, created, content, votes, title, permLink})
 			})
 		})
 	}
 
 	async getListOfPostsByUser(listOfPermLinks, username) {
-		console.log("a")
 		var listOfPosts = []
 		return new Promise(async (resolve) => {
-			console.log("1")
 			for(var i = 0; i < listOfPermLinks.length; i++) {
 				var a = await this.getPostsDataFromSteem(listOfPermLinks[i], username)
 				listOfPosts.push(a)
-				console.log("sixe " + listOfPosts.length)	
 			}
-			console.log("4")
-			console.log(listOfPosts[2])
 			resolve(listOfPosts)
 			})
 

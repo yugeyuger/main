@@ -23,7 +23,6 @@ app.post('/login', async (req, res) => {
 })
 
 app.get('/@', async (req, res) => {
-	console.log(req.query.username)
 	var userProfileInfo = await serverHelpers.getUserProfileInfo(req.query.username)
 	res.json({ userProfileInfo  })
 })

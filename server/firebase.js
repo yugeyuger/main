@@ -65,16 +65,15 @@ module.exports = class ServerSideValidation {
 	}
 
 	getListOfPermLinks(username, type) {
-		console.log(type)
 		return new Promise(resolve => {
         	firebase.database().ref('/users/' + username).once('value').then(function(snapshot) {
-        		console.log("in firebase " + snapshot.val())
         		if(type == "postsAboutBooks") {
-        			resolve(snapshot.val().postsAboutBooks)
+        			var postsAboutBooks = snapshot.val().postsAboutBooks
+        			resolve({ postsAboutBooks })
         		} else if(type == "bookmarks") {
-        			console.log(type)
-        			console.log(snapshot.val().bookmarks)
-        			resolve(snapshot.val().bookmarks)        			
+	       			var bookmarks = snapshot.val().bookmarks
+	       			console.log(bookmarks)
+        			resolve(bookmarks)        			
         		}
 			})		
 		})
