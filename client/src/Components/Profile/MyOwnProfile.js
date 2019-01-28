@@ -18,16 +18,13 @@ class MyOwnProfilePage extends Component {
 	}
 
 	constructor(props) {
-		console.log("constructor")
     	super(props);
     	this.getProfileInfo();
     }
 
     getProfileInfo = () => {
-    	console.log("dddsdsds")
     	axios.get("/@?username=" + JSON.parse(localStorage.getItem("loginStatus")).username)
 	    .then(res => {
-	    	console.log(res)
 	    	this.setState({ removeLoading: true})
  	    	if(res.data.message) {
 	    		this.setState({ error: res.data.message})
@@ -36,12 +33,10 @@ class MyOwnProfilePage extends Component {
 		        this.setState({ dataToSee: this.state.userProfileInfo.listOfPostUsersMade })
 	    	}
 	    })
-	    console.log(this.state.dataToSee)
   	}
 
   	handleItemClick = (e, { name }) => {
   		this.setState({ activeItem: name })
-  		console.log(this.state.activeItem)
   		if(name == "Bookmarks") {
   			this.setState({ dataToSee: this.state.userProfileInfo.listOfPostsOfBookmarks})
   		} else {

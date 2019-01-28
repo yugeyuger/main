@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { browserHistory } from 'react-router';
 import {
   Menu,
   Input,
@@ -18,9 +19,15 @@ import "../../../assets/main.css";
 import "./NavigationBar.css";
 
 class LoggedInNavigationBar extends Component {
+	constructor(props) {
+    super(props);
+	}
+	
   state = {
-    activeItem: window.location.pathname,
-    logout: false
+  	a: '',
+    activeItem: window.location.href,
+    logout: false,
+    changePage: false
   };
 
  	handleItemClick = (e, { name }) => {
@@ -36,21 +43,19 @@ class LoggedInNavigationBar extends Component {
 			newUrl = "logout";
 		}  else if(name == "Profile") {
 			newUrl = "/@" + JSON.parse(localStorage.getItem("loginStatus")).username
-		}
-		this.setState({ activeItem: newUrl });
-  	};
+    }
+      this.setState({ activeItem: newUrl , changePage: true});  
+  };
 
   render() {
     if (this.state.activeItem == "logout") {
       return <Redirect to={{ pathname: "/" }} />;
     }
-    if (
-      this.state.activeItem.length > 0 &&
-      this.state.activeItem != window.location.pathname
-    ) {
+    if (this.state.changePage && this.state.activeItem.length > 1) {
+      console.log(this.state.activeItem)
+      this.setState({changePage: false})
       return <Redirect to={{ pathname: this.state.activeItem }} />;
     }
-
     return (
       <div className="navBackground">
         <Menu borderless secondary>
@@ -86,7 +91,7 @@ class LoggedInNavigationBar extends Component {
                 active={this.state.activeItem === "/writeAboutABook"}
                 onClick={this.handleItemClick}
               />
-              <Menu.Item active={this.state.activeItem === "/@" + JSON.parse(localStorage.getItem("loginStatus")).username} name="Profile" onClick={this.handleItemClick}>
+              <Menu.Item active={window.location.pathname === "/@" + JSON.parse(localStorage.getItem("loginStatus")).username} name="Profile" onClick={this.handleItemClick}>
                 <Image avatar
                   className="profileImage"
                   src={JSON.parse(localStorage.getItem("loginStatus")).imageUrl}

@@ -8,6 +8,7 @@ import "../../../assets/main.css";
 
 class Header extends Component {
 	render() {
+		console.log(window.location.pathname)
 		if(!localStorage.getItem('loginStatus')) {
 			return (
 				<div>
@@ -18,7 +19,7 @@ class Header extends Component {
 		} else { 
 			return (
 				<div>
-					<LoggedInNavigationBar/>
+					<LoggedInNavigationBar />
 					{this.props.children}
 				</div>
 			)

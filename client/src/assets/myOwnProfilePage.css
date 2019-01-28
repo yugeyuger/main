@@ -52,6 +52,16 @@
  	text-decoration: none;
 }
 
+.likes {
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 14px;
+	color: black;
+}
+
+.heart{
+	cursor: pointer;
+}
+
 h2 {
 	font-family: 'Roboto', sans-serif !important;
 }
@@ -94,4 +104,15 @@ h2 {
 
 .loading {
 	fill: #90CCF4 !important;
+}
+
+.bookMarkOption{
+	float: right;
+	cursor: pointer;
+}
+
+.addToBookMarksButton{
+	font-family: 'Roboto', sans-serif !important;
+	background: #90CCF4 !important;
+	color: white !important;
 }
