@@ -15,8 +15,8 @@ const App = () => {
 				<Switch>
 				 	<Route path="/" component = {Home} exact/>
  					<Route path="/writeAboutABook" component = {WriteAboutABook} exact/>
- 					<Route path="/@:username" component = {Profile} exact/>
  				 	<Route path="/@:username/:permlink" component = {PostPage} exact/>
+ 					<Route path="/@:username" component = {Profile} exact/>
 				</Switch>
 			</BrowserRouter>
 			)

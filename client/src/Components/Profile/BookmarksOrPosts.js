@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
-import {  Feed, Menu, Image} from 'semantic-ui-react';
+import {  Feed, Menu, Image, Icon} from 'semantic-ui-react';
 import { Link, Redirect } from "react-router-dom";
 import ReactLoading from 'react-loading';
 
+import BookMarkOption from './BookMarkOption'
 import '../../assets/myOwnProfilePage.css'
 
 var moment = require('moment');
 
 class BookmarksOrPosts extends Component {
-	constructor(props) {
-		super(props)
-	}
 
 	state = {
 		dataToSee: [],
@@ -20,6 +18,7 @@ class BookmarksOrPosts extends Component {
 		goToProfilePage: false,
 		profilePageToGoTo: '',
 		removeLoading: false,
+		username: ''
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -43,31 +42,39 @@ class BookmarksOrPosts extends Component {
 		this.setState({ goToPostPage: true, postDataForPostPage: item})
  	}
 
- 	goToProfilePage = () => {
- 		window.location.reload(); 
-		this.setState({ goToProfilePage: true })
+ 	goToProfilePage = (item) => {
+ 		if(item['userAccountInfo']['username'] == JSON.parse(localStorage.getItem("loginStatus")).username) {
+ 			window.location.reload(); 
+ 		} else {
+ 			this.setState({ username: item['userAccountInfo']['username'], goToProfilePage: true })
+ 		}
  	}
 	renderUserData() {
 		if(this.state.goToProfilePage) {
-			return <Redirect to={{ pathname: '@' + postDataForPostPage['userAccountInfo']['username'] }} />;			
+			var username = this.state.username
+			console.log(username)
+			return <Redirect to={{ pathname: '@' + username }} />;			
 		}
 		if(this.state.goToPostPage) {
 			var postDataForPostPage = this.state.postDataForPostPage
-			console.log(postDataForPostPage)
-			return <Redirect to={{ pathname: '@' + postDataForPostPage['userAccountInfo']['username'] + '/' + postDataForPostPage['permLink'], state: {postDetails: postDataForPostPage} }} />;
+			return <Redirect to={{ 
+												pathname: '@' + postDataForPostPage['userAccountInfo']['username'] + '/' + postDataForPostPage['permLink'],
+												state: {postDetails: postDataForPostPage} 
+											}} 
+										/>;
 		}
 		if(this.state.dataToSee.length == 0) {
 			return <div></div>
 		}
 		return this.state.dataToSee.map((item, i) => {
-			console.log(item)
 		    return (
 			    <Feed.Event className="postFeed">
 			      <Feed.Label onClick={() => this.goToProfilePage(item)} className="clickable" image={item['userAccountInfo']['imageUrl']}/>
 			      <Feed.Content className="postFeedContent">
 			        <Feed.Summary>
-			          <a onClick={() => this.goToPostPage(item)} className="postUsername clickable">{item['userAccountInfo']['username']}</a> <a className="genre clickable">•&nbsp;{item['genre']}&nbsp;•&nbsp;</a>
+			          <a onClick={() => this.goToProfilePage(item)} className="postUsername clickable">{item['userAccountInfo']['username']}</a> <a className="genre clickable">•&nbsp;{item['genre']}&nbsp;•&nbsp;</a>
 			          <a className="howLongAgo">{moment.utc(item["created"], "YYYY-MM-DD hh:mm:ss").fromNow()}</a>
+			          <BookMarkOption activeItem = {this.props.tab} floated="right" />
 			        </Feed.Summary>
 			        <Feed.Summary >
 			          <h4 className="postTitle clickable" onClick={() => this.goToPostPage(item)}>{item["title"]}</h4> 
@@ -81,8 +88,8 @@ class BookmarksOrPosts extends Component {
 				        	<p className="postContent">{ReactHtmlParser(item["content"].substring(0, 250))} ...</p>
 				        </Feed.Extra>
 			        <Feed.Meta>
-			          <Feed.Like className="nonClickable">
-			            {item["active_votes"]} likes
+			          <Feed.Like>
+			            <p className="likes"><Icon className="heart" disabled name='like' />{item["votes"]} likes </p>
 			          </Feed.Like>
 			        </Feed.Meta>
 			      </Feed.Content>
