@@ -5,14 +5,12 @@ import {
   Button,
   Modal,
   Dropdown,
-  Header,
-  Icon,
   Form,
   Responsive,
   MenuItem,
   Image
 } from "semantic-ui-react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 
 import "../../../assets/main.css";
@@ -28,19 +26,19 @@ class NotLoggedInNavigationBar extends Component {
   };
 
   handleItemClick = (e, { name }) => {
-  	console.log(name)
-  	console.log(name =="Log in")
+    console.log(name);
+    console.log(name === "Log in");
     var newUrl;
-    if (name == "Write About a Book") {
-      	newUrl = "/writeAboutABook";
+    if (name === "Write About a Book") {
+      newUrl = "/writeAboutABook";
       this.setState({ open: true });
-    } else if (name == "In A Nutshell" || name == "IAN") {
-      	newUrl = "/";
-	} else if (name == "Log in") {
-      	this.setState({ open: true });
+    } else if (name === "In A Nutshell" || name === "IAN") {
+      newUrl = "/";
+    } else if (name === "Log in") {
+      this.setState({ open: true });
       return;
     }
-    console.log(newUrl)
+    console.log(newUrl);
     this.setState({ activeItem: newUrl });
   };
 
@@ -53,9 +51,9 @@ class NotLoggedInNavigationBar extends Component {
   };
 
   logUserIn = () => {
-    if (this.state.username.length == 0) {
+    if (this.state.username.length === 0) {
       this.setState({ error: "Please enter a username." });
-    } else if (this.state.password.length == 0) {
+    } else if (this.state.password.length === 0) {
       this.setState({ error: "Please enter a password." });
     } else {
       axios
@@ -70,22 +68,32 @@ class NotLoggedInNavigationBar extends Component {
           } else {
             this.setState({ error: response.data.error });
           }
-        })
+        });
     }
   };
 
   closeLoginModal = () => {
-    this.setState({ open: false, error: "", activeItem: window.location.pathname, username: '', password: ''});
+    this.setState({
+      open: false,
+      error: "",
+      activeItem: window.location.pathname,
+      username: "",
+      password: ""
+    });
   };
 
   render() {
     if (this.state.loginSuccessful) {
-      return <Redirect to={{ pathname: this.state.activeItem}} />;
+      return <Redirect to={{ pathname: this.state.activeItem }} />;
     }
 
     if (this.state.open) {
       return (
-        <Modal className="loginModal" open={this.state.open} onClose={this.closeLoginModal}>
+        <Modal
+          className="loginModal"
+          open={this.state.open}
+          onClose={this.closeLoginModal}
+        >
           <Modal.Content>
             <Form>
               <Form.Field>
@@ -120,7 +128,7 @@ class NotLoggedInNavigationBar extends Component {
 
     if (
       this.state.activeItem.length > 0 &&
-      this.state.activeItem != window.location.pathname
+      this.state.activeItem !== window.location.pathname
     ) {
       return <Redirect to={{ pathname: this.state.activeItem }} />;
     }
@@ -129,15 +137,15 @@ class NotLoggedInNavigationBar extends Component {
         <Menu borderless secondary>
           <Responsive as={MenuItem} minWidth={767}>
             <Menu.Item
-
               name="In A Nutshell"
               active={this.state.activeItem === "/"}
               onClick={this.handleItemClick}
             >
-              <Image size='mini' 
-                  className="profileImage"
-                  src={require("../../../assets/images/logo1.png")}
-                />
+              <Image
+                size="mini"
+                className="profileImage"
+                src={require("../../../assets/images/logo1.png")}
+              />
             </Menu.Item>
           </Responsive>
           <Responsive as={MenuItem} maxWidth={767}>
@@ -146,10 +154,11 @@ class NotLoggedInNavigationBar extends Component {
               active={this.state.activeItem === "/"}
               onClick={this.handleItemClick}
             >
-                <Image size='mini' 
-                  className="profileImage"
-                  src={require("../../../assets/images/logo1.png")}
-                />
+              <Image
+                size="mini"
+                className="profileImage"
+                src={require("../../../assets/images/logo1.png")}
+              />
             </Menu.Item>
             <Menu.Item>
               <Input icon="search" placeholder="Search..." />
@@ -161,13 +170,17 @@ class NotLoggedInNavigationBar extends Component {
                 <Input icon="search" placeholder="Search..." />
               </Menu.Item>
               <Menu.Item
-              	className="writeNavBar"
+                className="writeNavBar"
                 name="Write About a Book"
                 onClick={this.handleItemClick}
-              >
-              </Menu.Item>
-              <Menu.Item className="logInOnNavBar" name="Log in" onClick={this.handleItemClick} />
-              <Menu.Item className="signUpOnNavBar"
+              />
+              <Menu.Item
+                className="logInOnNavBar"
+                name="Log in"
+                onClick={this.handleItemClick}
+              />
+              <Menu.Item
+                className="signUpOnNavBar"
                 name="Sign Up"
                 onClick={this.handleItemClick}
                 a

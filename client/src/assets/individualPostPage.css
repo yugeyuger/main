@@ -1,0 +1,13 @@
+p {
+  font-size: 12pt;
+  line-height: 24pt;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+}
+
+.individualPostTitle {
+  text-align: center;
+}
