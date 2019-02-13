@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactHtmlParser from "react-html-parser";
-import { Grid } from "semantic-ui-react";
+import { Grid, Image } from "semantic-ui-react";
 import axios from "axios";
 import showdown from "showdown";
 import "../../assets/individualPostPage.css";
@@ -60,22 +60,37 @@ class IndividualPost extends Component {
     return (
       <div className="postPage">
         <Grid>
-          <Grid.Row className="title">
-            <Grid.Column width={4} className="postPageSide" />
-            <Grid.Column width={8} className="postMain">
-              <h1 className="individualPostTitle">
-                {ReactHtmlParser(this.state.postTitle)}
-              </h1>
+          <Grid.Row className="individualPostTitle">
+            <Grid.Column width={3} />
+            <Grid.Column width={10}>
+              <h1>{ReactHtmlParser(this.state.postTitle)}</h1>
             </Grid.Column>
-            <Grid.Column width={4} className="postPageSide" />
+            <Grid.Column width={3} />
           </Grid.Row>
-          <Grid.Row className="body">
-            <Grid.Column width={3} className="postPageSide" />
-            <Grid.Column width={10} className="postMain">
+          <Grid.Row className="individualPostTitle">
+            <Grid.Column width={5} />
+            <Grid.Column width={6}>
+              <div>
+                <p>
+                  <Image
+                    avatar
+                    className="profileImage"
+                    src={this.state.authorImageURL}
+                  />
+                  {ReactHtmlParser(this.state.author)}
+                </p>
+              </div>
+            </Grid.Column>
+            <Grid.Column width={5} />
+          </Grid.Row>
+
+          <Grid.Row>
+            <Grid.Column width={3} />
+            <Grid.Column width={10}>
               <p>{/*ReactHtmlParser(this.state.postBody)*/}</p>
               {ReactHtmlParser(this.state.processedPostBody)}
             </Grid.Column>
-            <Grid.Column width={3} className="postPageSide" />
+            <Grid.Column width={3} />
           </Grid.Row>
         </Grid>
       </div>
