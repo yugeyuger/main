@@ -1,28 +1,21 @@
 import React, { Component } from "react";
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from "react-html-parser";
-import { Grid, Image, Menu } from "semantic-ui-react";
-import { Link, Redirect } from "react-router-dom";
-import ReactLoading from "react-loading";
+import ReactHtmlParser from "react-html-parser";
+import { Grid, Image } from "semantic-ui-react";
 import axios from "axios";
+import showdown from "showdown";
+import "../../assets/individualPostPage.css";
 
-import "../../assets/myOwnProfilePage.css";
+var converter = new showdown.Converter();
 
 class IndividualPost extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     author: "",
     authorImageURL: "",
     genre: "",
     postTitle: "",
     postBody: "",
-    permLink: ""
+    permLink: "",
+    processedPostBody: ""
   };
 
   componentDidMount() {
@@ -30,25 +23,32 @@ class IndividualPost extends Component {
     pathArray[1] = pathArray[1].substr(1);
     const username = pathArray[1];
     const permLink = pathArray[2];
-    //console.log(pathArray);
-    /*const str1 = "/@";
-    const newPath = str1
-      .concat(username)
-      .concat("/")
-      .concat(permLink);*/
-    //console.log("NEW PATH RIGHT HERE: " + newPath);
 
     axios
       .get(`/@${username}/${permLink}`)
       .then(res => {
-        console.log(res);
+        // Line-break to <BR/> tag
+        function changeBrTag(html) {
+          return html.replace(/(\r\n\|\r|\n)/gi, "<br/>");
+        }
+        //Embed YouTube Video
+        function changeYouTubeTag(html) {
+          return html.replace(
+            /https:\/\/youtu.be\/([\w]*)/gi,
+            '<p><iframe width="420" height="315" src="https://www.youtube.com/embed/$1"></iframe></p>'
+          );
+        }
+
         this.setState({
           author: res.data.postInfo.userAccountInfo.username,
           authorImageURL: res.data.postInfo.userAccountInfo.imageUrl,
           genre: res.data.postInfo.genre,
           postTitle: res.data.postInfo.title,
           postBody: res.data.postInfo.content,
-          permLink: res.data.postInfo.permLink
+          permLink: res.data.postInfo.permLink,
+          processedPostBody: changeBrTag(
+            converter.makeHtml(res.data.postInfo.content)
+          )
         });
       })
       .catch(err => {
@@ -60,19 +60,37 @@ class IndividualPost extends Component {
     return (
       <div className="postPage">
         <Grid>
-          <Grid.Row className="title">
-            <Grid.Column width={4} className="postPageSide" />
-            <Grid.Column width={8} className="postMain">
+          <Grid.Row className="individualPostTitle">
+            <Grid.Column width={3} />
+            <Grid.Column width={10}>
               <h1>{ReactHtmlParser(this.state.postTitle)}</h1>
             </Grid.Column>
-            <Grid.Column width={4} className="postPageSide" />
+            <Grid.Column width={3} />
           </Grid.Row>
-          <Grid.Row className="body">
-            <Grid.Column width={2} className="postPageSide" />
-            <Grid.Column width={10} className="postMain">
-              <p>{ReactHtmlParser(this.state.postBody)}</p>
+          <Grid.Row className="individualPostTitle">
+            <Grid.Column width={5} />
+            <Grid.Column width={6}>
+              <div>
+                <p>
+                  <Image
+                    avatar
+                    className="profileImage"
+                    src={this.state.authorImageURL}
+                  />
+                  {ReactHtmlParser(this.state.author)}
+                </p>
+              </div>
             </Grid.Column>
-            <Grid.Column width={2} className="postPageSide" />
+            <Grid.Column width={5} />
+          </Grid.Row>
+
+          <Grid.Row>
+            <Grid.Column width={3} />
+            <Grid.Column width={10}>
+              <p>{/*ReactHtmlParser(this.state.postBody)*/}</p>
+              {ReactHtmlParser(this.state.processedPostBody)}
+            </Grid.Column>
+            <Grid.Column width={3} />
           </Grid.Row>
         </Grid>
       </div>

@@ -36,15 +36,6 @@ app.get("/@:username/:permLink", async (req, res) => {
 
   var postInfo = await serverHelpers.getPostsDataFromSteem(permLink, author);
   res.json({ postInfo });
-
-  /*
-    steem.api
-      .getContent(author, permLink, (err, result) => {
-        //console.log(err, result);
-      })
-      .then(result => {
-        res.json({ content: result });
-      });*/
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));

@@ -32,6 +32,7 @@
     "react-loading": "^2.0.3",
     "react-router-dom": "^4.3.1",
     "semantic-ui-react": "^0.84.0",
+    "showdown": "^1.9.0",
     "steem": "^0.7.4"
   }
 }
